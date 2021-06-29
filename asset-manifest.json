@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/react-routers-demo/static/css/main.52933f43.chunk.css",
+    "main.js": "/react-routers-demo/static/js/main.bec4db52.chunk.js",
+    "main.js.map": "/react-routers-demo/static/js/main.bec4db52.chunk.js.map",
+    "runtime-main.js": "/react-routers-demo/static/js/runtime-main.e60d21a2.js",
+    "runtime-main.js.map": "/react-routers-demo/static/js/runtime-main.e60d21a2.js.map",
+    "static/css/2.150d169a.chunk.css": "/react-routers-demo/static/css/2.150d169a.chunk.css",
+    "static/js/2.50536cb6.chunk.js": "/react-routers-demo/static/js/2.50536cb6.chunk.js",
+    "static/js/2.50536cb6.chunk.js.map": "/react-routers-demo/static/js/2.50536cb6.chunk.js.map",
+    "static/js/3.c4746f5c.chunk.js": "/react-routers-demo/static/js/3.c4746f5c.chunk.js",
+    "static/js/3.c4746f5c.chunk.js.map": "/react-routers-demo/static/js/3.c4746f5c.chunk.js.map",
+    "index.html": "/react-routers-demo/index.html",
+    "static/css/2.150d169a.chunk.css.map": "/react-routers-demo/static/css/2.150d169a.chunk.css.map",
+    "static/css/main.52933f43.chunk.css.map": "/react-routers-demo/static/css/main.52933f43.chunk.css.map",
+    "static/js/2.50536cb6.chunk.js.LICENSE.txt": "/react-routers-demo/static/js/2.50536cb6.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e60d21a2.js",
+    "static/css/2.150d169a.chunk.css",
+    "static/js/2.50536cb6.chunk.js",
+    "static/css/main.52933f43.chunk.css",
+    "static/js/main.bec4db52.chunk.js"
+  ]
+}
