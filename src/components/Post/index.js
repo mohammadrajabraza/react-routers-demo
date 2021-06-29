@@ -1,17 +1,12 @@
 import './index.css'
 import { Container, Row, Col, Button} from 'react-bootstrap'
-import {Link, useRouteMatch, useHistory} from 'react-router-dom'
+import {Link, useRouteMatch} from 'react-router-dom'
 
 
 function Post(props) {
 
     const { post : {title, id}, postIndex} = props
-    let match = useRouteMatch();
-    let history = useHistory()
-
-    let handlePostDetailsButtonCLick = (id) => {
-        history.push(`/${id}`)
-    }
+    let match = useRouteMatch()
 
 
     return <> 

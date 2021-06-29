@@ -4,8 +4,7 @@ import {
   Route,
   Link,
   Redirect,
-  useHistory,
-  useLocation
+  useHistory
 } from 'react-router-dom'
 import Login from './screens/Login'
 import Signup from './screens/Signup'
@@ -16,7 +15,6 @@ import { Container, Row, Col, Button} from 'react-bootstrap'
 
 function App() {
 
-  let location = useLocation()
   let history = useHistory()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 

@@ -10,7 +10,6 @@ function Posts() {
 
   let match = useRouteMatch()
   let location = useLocation()
-  console.log(location)
   const deletePost = (index) => {
     const tempPostList = [...posts]
     tempPostList.splice(index, 1)
