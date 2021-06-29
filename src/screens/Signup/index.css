@@ -1,0 +1,7 @@
+.auth-container {
+    height: auto;
+    width: 400px;
+    border: 1px solid gray;
+    padding: 50px 10px;
+    border-radius: 15px;
+}
