@@ -7,8 +7,6 @@ function Post(props) {
 
     const { post : {title, id}, postIndex} = props
     let match = useRouteMatch()
-
-
     return <> 
                 <Container className="post">
                     <Row className="header justify-content-center">

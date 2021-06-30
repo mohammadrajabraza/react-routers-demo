@@ -4,24 +4,51 @@ import {
   Route,
   Link,
   Redirect,
-  useHistory
+  useHistory,
+  useRouteMatch
 } from 'react-router-dom'
 import Login from './screens/Login'
 import Signup from './screens/Signup'
 import Posts from './screens/Posts'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Container, Row, Col, Button} from 'react-bootstrap'
+import PostDetails from './components/PostDetails'
 
 function App() {
 
   let history = useHistory()
+  let match = useRouteMatch()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-
+  const [posts, setPosts] = useState([])
+  
   const getAuthenticated = () => {
     setIsAuthenticated(true)
   }
 
+  const deletePost = (index) => {
+    const tempPostList = [...posts]
+    tempPostList.splice(index, 1)
+    setPosts(tempPostList)
+  }
+
+  const updatePost = (index, title, body) => {
+    const tempPostList = [...posts]
+    const tempPost = tempPostList.slice(index, index + 1)
+    tempPost[0].body = body
+    tempPost[0].title = title
+    tempPostList.splice(index, 1, tempPost[0])
+    setPosts(tempPostList)
+  }
+
+  const getPosts = () => posts
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+    .then(res => res.json())
+    .then(res => setPosts(res))
+  }, [])
+
+  
   return (
         <div className="App">
             <Container className="greeting-bar">
@@ -50,8 +77,11 @@ function App() {
               <Route path="/users">
                   <Users isAuthenticated={isAuthenticated} history={history}/>
               </Route>
+              <Route path={`${match.path}/:postId`}>
+                  <PostDetails getPosts={getPosts} deletePost={deletePost} updatePost={updatePost}/>
+              </Route>
               <Route path="/posts">
-                <Posts/>
+                <Posts getPosts={getPosts} deletePost={deletePost} updatePost={updatePost}/>
               </Route>
               <Route path="/signup">
                 <Signup/>
@@ -59,6 +89,7 @@ function App() {
               <Route path="/login">
                 <Login getAuthenticated={getAuthenticated} isAuthenticated={isAuthenticated}/>
               </Route>
+
               <Redirect to="/"/>
             </Switch>
           </div>

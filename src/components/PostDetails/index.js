@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import './index.css'
 import { Container, Row, Col, Button} from 'react-bootstrap'
-import {useParams} from 'react-router-dom'
+import {useParams, Redirect} from 'react-router-dom'
 
 
 function PostDetails(props) {
@@ -9,19 +9,33 @@ function PostDetails(props) {
     const [updateMode, setUpdateMode] = useState(false)
     const [updatedPostTitle, setUpdatedPostTitle] = useState()
     const [updatedPostBody, setUpdatedPostBody] = useState() 
+    const [posts, setPosts] = useState([])
+    const [currentPostIndex, setCurrentPostIndex] = useState(-2)
 
-    const { posts, updatePost, deletePost} = props
+    const {updatePost, deletePost} = props
     const {postId} = useParams()
-    let postIndex = posts.findIndex((post) => post.id === parseInt(postId) )
-    let {title, body} = posts[postIndex]
 
-    return <Container className="post">
+
+    useEffect(() => {
+        setPosts(props.getPosts())
+    }, [props])
+
+    useEffect(() => {
+        if(posts.length > 0){
+            setCurrentPostIndex(posts.findIndex((post) => post.id === parseInt(postId) ))
+        }        
+    },[posts, postId])
+
+    console.log(posts)
+    return (
+        posts.length > 0 && currentPostIndex !== -2 && currentPostIndex !== -1?
+    <Container className="post">
         <Row className="header justify-content-center">
             <Col lg="auto">
                 {updateMode ? 
                     <textarea cols="100" rows="2" value={updatedPostTitle}
                     onChange = { e => setUpdatedPostTitle(e.target.value)} /> :
-                    <h1> {`${postIndex+1}. ${title}`} </h1>
+                    <h1> {`${currentPostIndex+1}. ${posts[currentPostIndex].title}`} </h1>
                 }
             </Col>
         </Row>
@@ -35,7 +49,7 @@ function PostDetails(props) {
                 {
                     updateMode && 
                     <Button onClick={() => {
-                        updatePost(postIndex, updatedPostTitle, updatedPostBody)
+                        updatePost(currentPostIndex, updatedPostTitle, updatedPostBody)
                         setUpdateMode(false)
                         }
                     }>Update</Button>
@@ -43,7 +57,7 @@ function PostDetails(props) {
         
                 {
                     updateMode || 
-                    <p> {body} </p>
+                    <p> {posts[currentPostIndex].body} </p>
                 }
             </Col>
         </Row>
@@ -52,19 +66,24 @@ function PostDetails(props) {
                 { 
                     updateMode || 
                     <Button onClick={() => {
-                        setUpdatedPostBody(body)
-                        setUpdatedPostTitle(title)
+                        setUpdatedPostBody(posts[currentPostIndex].body)
+                        setUpdatedPostTitle(posts[currentPostIndex].title)
                         setUpdateMode(true)
                         }
                     }>Edit</Button> 
                 }
                 { 
                     updateMode || 
-                    <Button className="ml-2" variant="danger" onClick={() => deletePost(postIndex)}>Delete</Button> 
+                    <Button className="ml-2" variant="danger" onClick={() => deletePost(currentPostIndex)}>Delete</Button> 
                 }
             </Col>
         </Row>
-    </Container>
+    </Container>:
+    (currentPostIndex === -1 ?
+        <Redirect to="/posts"/>:
+        <div>No data available</div>)
+    
+    )
 }
 
 export default PostDetails

@@ -4,45 +4,34 @@ import Post from '../../components/Post'
 import {Switch, Route, useRouteMatch, useLocation} from 'react-router-dom'
 import PostDetails from '../../components/PostDetails'
 
-function Posts() {
+function Posts(props) {
 
-  const [posts, setPosts] = useState([])
-
+  const {getPosts, deletePost, updatePost} = props
+  const [allPosts, setAllPosts] = useState([])
   let match = useRouteMatch()
   let location = useLocation()
-  const deletePost = (index) => {
-    const tempPostList = [...posts]
-    tempPostList.splice(index, 1)
-    setPosts(tempPostList)
-  }
 
-  const updatePost = (index, title, body) => {
-    const tempPostList = [...posts]
-    const tempPost = tempPostList.slice(index, index + 1)
-    tempPost[0].body = body
-    tempPost[0].title = title
-    tempPostList.splice(index, 1, tempPost[0])
-    setPosts(tempPostList)
-  }
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-    .then(res => res.json())
-    .then(res => setPosts(res))
-  }, [])
+    setAllPosts(props.getPosts)
+  }, [props])
 
+
+  
   return (
-    location.pathname === "/posts" || location.pathname === "/posts/" ?
-    <div className="post-container">
-        {posts.map((post, index) => {
-          return  <Post post={post} postIndex={index}/>
-          })
-        }
-    </div>:
-    <Switch>
-      <Route path={`${match.path}/:postId`}>
-          <PostDetails posts={posts} deletePost={deletePost} updatePost={updatePost}/>
-      </Route>
-    </Switch>
+    <div className="post-container"> 
+      {location.pathname === "/posts" || location.pathname === "/posts/" ?
+      allPosts.length === 0 ?
+        <div>Data not available</div>:
+        allPosts.map((post, index) => {
+        return  <Post post={post} postIndex={index}/>
+        })
+      :
+      <Switch>
+        <Route path={`${match.path}/:postId`}>
+            <PostDetails getPosts={getPosts} deletePost={deletePost} updatePost={updatePost}/>
+        </Route>
+      </Switch>}
+    </div>
     
   );
 }
