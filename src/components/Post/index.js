@@ -1,5 +1,5 @@
 import './index.css'
-import { Container, Row, Col, Button} from 'react-bootstrap'
+import {Row, Col, Button, Card} from 'react-bootstrap'
 import {Link, useRouteMatch} from 'react-router-dom'
 
 
@@ -7,22 +7,20 @@ function Post(props) {
 
     const { post : {title, id}, postIndex} = props
     let match = useRouteMatch()
-    return <> 
-                <Container className="post">
-                    <Row className="header justify-content-center">
-                        <Col lg="auto">
-                            <h1> {`${postIndex+1}. ${title}`} </h1>
-                        </Col>
-                    </Row>
-                    <Row className="footer">
-                        <Col lg={{ span: 2, offset: 10}}>
-                            <Link to={`${match.url}/${id}`}>
-                                <Button className="ml-2" variant="success">Details</Button> 
-                            </Link>
-                        </Col>
-                    </Row>
-                </Container>
-
-    </>
+    return (
+        <Card className="post"  style={{ width: 'auto' }}>
+            <Card.Header className="header">{`Post ${postIndex + 1}`}</Card.Header>
+            <Card.Body >
+                <Card.Title>{title}</Card.Title>
+                <Row className="footer">
+                <Col className="col">
+                    <Link to={`${match.url}/${id}`}>
+                        <Button className="ml-2" variant="success">Detail</Button> 
+                    </Link>
+                </Col>
+            </Row>
+            </Card.Body>
+        </Card>
+    )
 }
 export default Post

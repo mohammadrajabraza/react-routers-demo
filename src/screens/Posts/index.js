@@ -1,12 +1,12 @@
 import './index.css'
 import {useEffect, useState} from 'react'
 import Post from '../../components/Post'
-import {Switch, Route, useRouteMatch, useLocation} from 'react-router-dom'
+import {Switch, Route, useRouteMatch, useLocation, Redirect} from 'react-router-dom'
 import PostDetails from '../../components/PostDetails'
 
 function Posts(props) {
 
-  const {getPosts, deletePost, updatePost} = props
+  const {getPosts, deletePost, updatePost, isAuthenticated} = props
   const [allPosts, setAllPosts] = useState([])
   let match = useRouteMatch()
   let location = useLocation()
@@ -18,6 +18,7 @@ function Posts(props) {
 
   
   return (
+    isAuthenticated ?
     <div className="post-container"> 
       {location.pathname === "/posts" || location.pathname === "/posts/" ?
       allPosts.length === 0 ?
@@ -31,8 +32,8 @@ function Posts(props) {
             <PostDetails getPosts={getPosts} deletePost={deletePost} updatePost={updatePost}/>
         </Route>
       </Switch>}
-    </div>
-    
+    </div> :
+    <Redirect to="/login"/>
   );
 }
 

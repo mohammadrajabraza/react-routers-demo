@@ -5,7 +5,7 @@ function Login(props) {
 
     const {getAuthenticated, isAuthenticated } = props
     return isAuthenticated ?
-    <Redirect to="/"/> :
+    (<Redirect to="/"/>) :
     <div className="auth-container">
                 <Container>
                     <Form>

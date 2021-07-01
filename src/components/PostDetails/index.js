@@ -1,16 +1,15 @@
 import { useState, useEffect} from 'react'
 import './index.css'
-import { Container, Row, Col, Button} from 'react-bootstrap'
+import { Card, Row, Col, Button} from 'react-bootstrap'
 import {useParams, Redirect} from 'react-router-dom'
+import PostUpdateForm from '../PostUpdateForm'
 
 
 function PostDetails(props) {
 
     const [updateMode, setUpdateMode] = useState(false)
-    const [updatedPostTitle, setUpdatedPostTitle] = useState()
-    const [updatedPostBody, setUpdatedPostBody] = useState() 
     const [posts, setPosts] = useState([])
-    const [currentPostIndex, setCurrentPostIndex] = useState(-2)
+    const [postIndex, setCurrentPostIndex] = useState(-2)
 
     const {updatePost, deletePost} = props
     const {postId} = useParams()
@@ -26,62 +25,53 @@ function PostDetails(props) {
         }        
     },[posts, postId])
 
-    console.log(posts)
     return (
-        posts.length > 0 && currentPostIndex !== -2 && currentPostIndex !== -1?
-    <Container className="post">
-        <Row className="header justify-content-center">
-            <Col lg="auto">
-                {updateMode ? 
-                    <textarea cols="100" rows="2" value={updatedPostTitle}
-                    onChange = { e => setUpdatedPostTitle(e.target.value)} /> :
-                    <h1> {`${currentPostIndex+1}. ${posts[currentPostIndex].title}`} </h1>
-                }
-            </Col>
-        </Row>
-        <Row className="body">
-            <Col>
-                {
-                    updateMode && 
-                    <textarea  cols="100" rows="5" value={updatedPostBody}
-                        onChange = { e => setUpdatedPostBody(e.target.value)} />
-                }
-                {
-                    updateMode && 
-                    <Button onClick={() => {
-                        updatePost(currentPostIndex, updatedPostTitle, updatedPostBody)
-                        setUpdateMode(false)
-                        }
-                    }>Update</Button>
-                }
+        posts.length > 0 && postIndex !== -2 && postIndex !== -1 ?
         
-                {
-                    updateMode || 
-                    <p> {posts[currentPostIndex].body} </p>
-                }
-            </Col>
-        </Row>
-        <Row className="footer">
-            <Col lg={{ span: 6, offset: 6}}>
-                { 
-                    updateMode || 
-                    <Button onClick={() => {
-                        setUpdatedPostBody(posts[currentPostIndex].body)
-                        setUpdatedPostTitle(posts[currentPostIndex].title)
-                        setUpdateMode(true)
-                        }
-                    }>Edit</Button> 
-                }
-                { 
-                    updateMode || 
-                    <Button className="ml-2" variant="danger" onClick={() => deletePost(currentPostIndex)}>Delete</Button> 
-                }
-            </Col>
-        </Row>
-    </Container>:
-    (currentPostIndex === -1 ?
-        <Redirect to="/posts"/>:
-        <div>No data available</div>)
+    ( updateMode    ?
+        <PostUpdateForm updatePost={updatePost} setUpdateMode={setUpdateMode} 
+            postIndex={postIndex} title={posts[postIndex].title}
+                body={posts[postIndex].body}
+            />   :
+        <Card className="post"  style={{ width: 'auto' }}>
+            <Card.Header className="header justify-content-center">Post</Card.Header>
+            <Card.Body className="body">
+                <Card.Title>{posts[postIndex].title}</Card.Title>
+                <Card.Text>{posts[postIndex].body}</Card.Text>
+                <Row className="footer">
+                    <Col>
+                        <Button onClick = { () => setUpdateMode(true) } >Edit</Button> 
+                        <Button className ="ml-2" variant="danger" onClick = { () => deletePost(postIndex) } >Delete</Button>
+                    </Col>
+                </Row>
+            </Card.Body>
+        </Card>
+        // <Container className="post">
+        //     <Row className="header justify-content-center">
+        //         <Col lg="auto">
+        //                 <h1> {posts[postIndex].title} </h1>
+        //         </Col>
+        //     </Row>
+        //     <Row className="body">
+        //         <Col>
+        //                 <p> {posts[postIndex].body} </p>
+        //         </Col>
+        //     </Row>
+        //     <Row className="footer">
+        //         <Col lg={{ span: 6, offset: 6}}>
+        //                 <Button onClick={() => {
+        //                     setUpdateMode(true)
+        //                     }
+        //                 }>Edit</Button> 
+        //                 <Button className="ml-2" variant="danger" onClick={() => deletePost(postIndex)}>Delete</Button>
+        //         </Col>
+        //     </Row>
+        // </Container>
+    )   :
+    (postIndex === -1 ?
+        <Redirect to="/posts"/> :
+        <div>No data available</div>
+    )
     
     )
 }
